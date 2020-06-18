@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "D:/Arduino/**",
+                "C:/Users/zukad/Documents/Arduino/libraries/**",
+                "D:/Arduino/hardware/arduino/avr/cores/arduino",
+                "D:/Arduino/hardware/tools/avr/avr/include"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "intelliSenseMode": "msvc-x64"
+        }
+    ],
+    "version": 4
+}

@@ -1,0 +1,51 @@
+#####################################################
+# Syntax Coloring Map For Timer_Interrupts Library 
+#####################################################
+
+###############
+# Class Names 
+###############
+
+TimerInterrupt	KEYWORD1
+ISR	KEYWORD1
+
+################
+# Method Names 
+################
+
+initTimer	KEYWORD2
+load	KEYWORD2
+
+enableCompareA	KEYWORD2
+enableCompareB	KEYWORD2
+enableOVF	KEYWORD2
+
+disableCompareA	KEYWORD2
+disableCompareB	KEYWORD2
+disableOVF	KEYWORD2
+
+################
+# Constants
+################
+
+Timer	LITERAL1
+Timer0	LITERAL1
+Timer1	LITERAL1
+Timer2	LITERAL1
+
+Prescaler	LITERAL1
+None	LITERAL1
+_8th	LITERAL1
+_64th	LITERAL1
+_256th	LITERAL1
+_1024th	LITERAL1
+
+TIMER0_COMPA_vect	LITERAL1
+TIMER0_COMPB_vect	LITERAL1
+TIMER0_OVF_vect	LITERAL1
+TIMER1_COMPA_vect	LITERAL1
+TIMER1_COMPB_vect	LITERAL1
+TIMER1_OVF_vect	LITERAL1
+TIMER2_COMPA_vect	LITERAL1
+TIMER2_COMPB_vect	LITERAL1
+TIMER2_OVF_vect	LITERAL1

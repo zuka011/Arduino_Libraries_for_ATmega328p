@@ -1,0 +1,19 @@
+#####################################################
+# Syntax Coloring Map For 7_Segment_Display Library 
+#####################################################
+
+###############
+# Class Names 
+###############
+
+SegDisplay	KEYWORD1
+
+################
+# Method Names 
+################
+
+setNumber	KEYWORD2
+setSymbol	KEYWORD2
+getDisplayValues	KEYWORD2
+show	KEYWORD2
+clear	KEYWORD2

@@ -1,0 +1,23 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "D:/Arduino/**",
+                "C:/Users/zukad/Documents/Arduino/libraries/7_Segment_Display_NSR",
+                "C:/Users/zukad/Documents/Arduino/libraries/**",
+                "D:/Arduino/hardware/arduino/avr/cores/arduino",
+                "D:/Arduino/hardware/tools/avr/avr/include",
+                "D:/Arduino/hardware/tools/avr/lib/gcc/avr/7.3.0/include"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "intelliSenseMode": "msvc-x64"
+        }
+    ],
+    "version": 4
+}

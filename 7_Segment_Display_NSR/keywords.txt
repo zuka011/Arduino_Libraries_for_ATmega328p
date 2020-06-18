@@ -1,0 +1,33 @@
+#####################################################
+# Syntax Coloring Map For 7_Segment_Display_NSR Library 
+#####################################################
+
+###############
+# Class Names 
+###############
+
+SegDisplay	KEYWORD1
+
+################
+# Method Names 
+################
+
+setNumber	KEYWORD2
+setSymbol	KEYWORD2
+clear	KEYWORD2
+getDisplayValues	KEYWORD2
+turnOn	KEYWORD2
+turnOff	KEYWORD2
+showNumber	KEYWORD2
+showSymbol	KEYWORD2
+disableDynamicMode	KEYWORD2
+isDynamic	KEYWORD2
+show	KEYWORD2
+
+################
+# Constants 
+################
+
+INDEFINITE	LITERAL1
+MINUS_SIGN	LITERAL1
+DECIMAL	LITERAL1
