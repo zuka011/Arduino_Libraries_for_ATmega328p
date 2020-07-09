@@ -26,6 +26,8 @@ static int last_stepper = 0;
 
 StepperMotor::StepperMotor() {
     
+	powerSaverMode(false);
+	interruptable(true);
     setSpeed(DEFAULT_DELAY);
     setStartPosition();
 }
@@ -174,15 +176,18 @@ void StepperMotor::removeStepper() {
 
     if(index != -1)  {
 
-        for(int i = index + 1; i < callback_steppers; i++) callback_steppers[i - 1] = callback_steppers[i]; 
+        for(int i = index + 1; i < last_stepper; i++) callback_steppers[i - 1] = callback_steppers[i]; 
         last_stepper--;
     }
 }
 
 void StepperMotor::enableTimer() {
 
-    TCCR2B &= B11111000;
-    TCCR2B |= _BV(CS21) | _BV(CS20);
+	if(TCCR2B & 0B00000111 == 0 || TCCR2B & 0B00000111 > 0B00000011) {
+		
+		TCCR2B &= 0B11111000;
+		TCCR2B |= _BV(CS21) | _BV(CS20);
+	}
 
     OCR2B = TIMER_MATCH_VALUE;
 
