@@ -28,7 +28,7 @@ public:
     /**
      * powerSaverMode():
      * ------------------------------------------------------------------------------------------------
-     * If set to true, the stepper motor will not consume power, i.e. the coils in the motor will not be energised. 
+     * If set to true, the stepper motor will not consume power while idle, i.e. the coils in the motor will not be energised. 
      * Of course, this means that the motor will not hold it's position if force is applied to it.
      */
     void powerSaverMode(bool powerSaverMode);

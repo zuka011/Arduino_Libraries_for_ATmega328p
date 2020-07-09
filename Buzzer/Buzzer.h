@@ -21,6 +21,7 @@ class Buzzer {
 public:
 
     // DISCLAIMER: This library overrides the input capture interrupt of Timer1. Also heavily modifies the timing of other interrupts and the prescaler.
+    // WARNING: This library only works if you connect the buzzer to either pin 9 or pin 10.
 
     /** 
      * Constructor:
