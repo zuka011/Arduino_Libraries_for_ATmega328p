@@ -1,0 +1,32 @@
+#####################################################
+# Syntax Coloring Map For Buzzer Library 
+#####################################################
+
+###############
+# Class Names 
+###############
+
+Buzzer	KEYWORD1
+
+################
+# Method Names 
+################
+
+setReference	KEYWORD2
+playTone	KEYWORD2
+playNote	KEYWORD2
+playSequence	KEYWORD2
+playSequence	KEYWORD2
+
+################
+# Constants
+################
+
+Note	LITERAL1
+A	LITERAL1
+B	LITERAL1
+C	LITERAL1
+D	LITERAL1
+E	LITERAL1
+F	LITERAL1
+G	LITERAL1
