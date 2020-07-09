@@ -30,6 +30,12 @@ StepperMotor::StepperMotor() {
 	interruptable(true);
     setSpeed(DEFAULT_DELAY);
     setStartPosition();
+
+    forwardSequence = false;
+    backwardSequence = false;
+    sequenceTimer = 0;
+    forwardSequenceIterator = 0;
+    backwardSequenceIterator = N_STEPS - 1;
 }
 
 StepperMotor::~StepperMotor() {
@@ -91,8 +97,6 @@ void StepperMotor::step(long nSteps) {
 
 void StepperMotor::step() {
 
-    static bool forwardSequence = false, backwardSequence = false;
-
     if (powerSaver && nSteps == 0) for (int i = 0; i < N_STEPPER_PINS; i++) digitalWrite(stepperPins[i], 0);
     else if (forwardSequence || nSteps > 0) {
 
@@ -113,20 +117,17 @@ void StepperMotor::step() {
 }
 
 bool StepperMotor::stepForward() {
+   
+    while(forwardSequenceIterator < N_STEPS) {
 
-    static long timer = 0;
-    static int i = 0;
-    
-    while(i < N_STEPS) {
-
-        for (int j = 0; j < N_STEPPER_PINS; j++) digitalWrite(stepperPins[j], SEQUENCE[i] & _BV(j));
+        for (int j = 0; j < N_STEPPER_PINS; j++) digitalWrite(stepperPins[j], SEQUENCE[forwardSequenceIterator] & _BV(j));
         
-        if(micros() - timer < delayUSeconds) return false;
-        timer = micros();
+        if(micros() - sequenceTimer < delayUSeconds) return false;
+        sequenceTimer = micros();
 
-        i++;
+        forwardSequenceIterator++;
     }
-    i = 0;
+    forwardSequenceIterator = 0;
 
     nSteps--;
     currPosition += degreePerStep;
@@ -135,19 +136,16 @@ bool StepperMotor::stepForward() {
 
 bool StepperMotor::stepBackward() {
 
-    static long timer = 0;
-    static int i = N_STEPS - 1;
-    
-    while(i >= 0) {
+    while(backwardSequenceIterator >= 0) {
 
-        for (int j = 0; j < N_STEPPER_PINS; j++) digitalWrite(stepperPins[j], SEQUENCE[i] & _BV(j));
+        for (int j = 0; j < N_STEPPER_PINS; j++) digitalWrite(stepperPins[j], SEQUENCE[backwardSequenceIterator] & _BV(j));
         
-        if(micros() - timer < delayUSeconds) return false;
-        timer = micros();
+        if(micros() - sequenceTimer < delayUSeconds) return false;
+        sequenceTimer = micros();
 
-        i--;
+        backwardSequenceIterator--;
     }
-    i = N_STEPS - 1;
+    backwardSequenceIterator = N_STEPS - 1;
     
     nSteps++;
     currPosition -= degreePerStep;

@@ -92,6 +92,10 @@ private:
 
     bool powerSaver, interruptMode;
 
+    volatile bool forwardSequence, backwardSequence;
+    volatile long sequenceTimer;
+    volatile int forwardSequenceIterator, backwardSequenceIterator;
+
     void addStepper();
     void removeStepper();
     void enableTimer();
