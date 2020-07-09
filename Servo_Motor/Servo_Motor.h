@@ -105,7 +105,7 @@ private:
     SweepType sweepType;
     uint8_t sweepStepSize, sweepStart, sweepStop;
 
-    void enableTimer2();
+    void enableTimer();
     ServoRange inRange(uint8_t low, uint8_t high);
 
 };

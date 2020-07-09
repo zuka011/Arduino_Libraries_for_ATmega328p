@@ -65,10 +65,7 @@ void ServoMotor::writeMicroseconds(int highLength) {
 
     if(millis() - pulseTimer > PULSE_DELAY) {
         
-        uint8_t TimerMask1 = TIMSK1, TimerMask2 = TIMSK2;
-        
-        TIMSK1 &= B11111000;
-        TIMSK2 &= B11111000;
+		noInterrupts();
 
         digitalWrite(controlPin, HIGH);
         delayMicroseconds(highLength);
@@ -76,9 +73,8 @@ void ServoMotor::writeMicroseconds(int highLength) {
         digitalWrite(controlPin, LOW);
         
         pulseTimer = millis();
-
-        TIMSK1 = TimerMask1;
-        TIMSK2 = TimerMask2;
+		
+		interrupts();
     }
 }
 
@@ -88,7 +84,7 @@ int ServoMotor::read() {
 
 void ServoMotor::enableCallback() {
 
-    enableTimer2();
+    enableTimer();
 
     if(last_servo == MAX_SERVOS) return;
     for(int i = 0; i < last_servo; i++) if(callback_servos[i]->controlPin == controlPin) return;
@@ -185,7 +181,7 @@ ServoMotor::ServoRange ServoMotor::inRange(uint8_t low, uint8_t high) {
     return InRange;
 }
 
-void ServoMotor::enableTimer2() {
+void ServoMotor::enableTimer() {
 
     // Checks if Timer2 is connected to the cpu clock. Connects it with a 1/1024 prescaler if not connected.
     if(TCCR2B & B00000111 == 0) TCCR2B |= B00000101;
@@ -196,10 +192,10 @@ void ServoMotor::enableTimer2() {
 
 ISR(TIMER2_OVF_vect) {
 
-    static const int DELAY = 25;
+    static const int DELAY = 30;
     static volatile unsigned long timer = 0;
 
-    if(millis() - timer > DELAY * last_servo) {
+    if(millis() - timer > DELAY) {
         for(int i = 0; i < last_servo; i++) {
             callback_servos[i]->sweep();
             callback_servos[i]->write();
