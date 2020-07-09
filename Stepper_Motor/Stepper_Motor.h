@@ -84,7 +84,7 @@ public:
 private:
 
     float stepsPerRevolution, delayUSeconds;
-    volatile int nSteps;
+    volatile long nSteps;
 
     double degreePerStep;
     volatile double currPosition;

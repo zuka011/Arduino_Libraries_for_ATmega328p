@@ -36,6 +36,8 @@ StepperMotor::StepperMotor() {
     sequenceTimer = 0;
     forwardSequenceIterator = 0;
     backwardSequenceIterator = N_STEPS - 1;
+
+    nSteps = 0;
 }
 
 StepperMotor::~StepperMotor() {
@@ -102,14 +104,13 @@ void StepperMotor::step() {
 
         forwardSequence = true;
         if(!stepForward()) return;        
-        forwardSequence = false;
+        forwardSequence = false;        
 
     } else if (backwardSequence || nSteps < 0) {
 
         backwardSequence = true;
         if(!stepBackward()) return;
         backwardSequence = false;
-
     }
 
     if(currPosition > FULL_REVOLUTION_D) currPosition -= FULL_REVOLUTION_D;
