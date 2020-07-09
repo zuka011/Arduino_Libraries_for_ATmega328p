@@ -1,8 +1,8 @@
 #include "Buzzer.h"
 
 #define N_LETTERS 12
-#define START_OCTAVE 2
-#define END_OCTAVE 9
+#define START_OCTAVE 2  
+#define END_OCTAVE 8
 #define N_OCTAVES (END_OCTAVE - START_OCTAVE)
 
 #define SEMITONE_RATIO 1.059463094359295
@@ -11,13 +11,33 @@
 
 #define CLOCK_FREQUENCY 16e6
 #define TIMER1_PRESCALER 1
+#define TIMER1_MAX 65535
 #define MAX_BUZZERS 2
 
 static volatile Buzzer* callback_buzzers[MAX_BUZZERS];
 static volatile int last_buzzer = 0;
 
+String Note::toString() {
+
+    String stringRep;
+    switch(name) {
+        case C: stringRep += "C"; break;
+        case Db: stringRep += "Db"; break;
+        case D: stringRep += "D"; break;
+        case Eb: stringRep += "Eb"; break;
+        case E: stringRep += "E"; break;
+        case F: stringRep += "F"; break;
+        case Gb: stringRep += "Gb"; break;
+        case G: stringRep += "G"; break;
+        case Ab: stringRep += "Ab"; break;
+        case A: stringRep += "A"; break;
+        case Bb: stringRep += "Bb"; break;
+        case B: stringRep += "B"; break;
+    }
+    return stringRep + String(octave);
+}
+
 Buzzer::Buzzer(float referencePitch) {
-    
 
     this->referencePitch = referencePitch;
 
@@ -47,25 +67,22 @@ void Buzzer::attach(uint8_t buzzerPin) {
 }
 
 void Buzzer::setReference(float referencePitch) {
-    
+
     this->referencePitch = referencePitch;
     getNoteFrequencies();
 }
 
 void Buzzer::playTone(float frequency, long duration = INDEFINITE) {
-    playSequence(&frequency, 1, &duration);
+    playSequence(&frequency, &duration, 1);
 }
 
 void Buzzer::playNote(Note note, long duration = INDEFINITE) {
-
-    // Note tempArr[1] = {note};
-    playSequence(&note, 1, &duration);
+    playSequence(&note, &duration, 1);
 }
 
 void Buzzer::playSequence(float *frequencies, long *duration, int nFrequencies) {
 
     getSequence(frequencies, duration, nFrequencies);
-    currDuration = duration;
     sequenceSize = nFrequencies;
     currNote = 0;
     playState = 0;
@@ -74,10 +91,19 @@ void Buzzer::playSequence(float *frequencies, long *duration, int nFrequencies) 
 void Buzzer::playSequence(Note *notes, long *duration, int nNotes) {
 
     getSequence(notes, duration, nNotes);
-    currDuration = duration;
     sequenceSize = nNotes;
     currNote = 0;
     playState = 0;
+}
+
+bool Buzzer::isPlaying() { 
+    return currNote == sequenceSize;
+}
+
+void Buzzer::stop() {
+
+    currNote = sequenceSize;
+    stopTone();
 }
 
 void Buzzer::play() {
@@ -116,7 +142,8 @@ void Buzzer::startTone(float frequency) {
 }
 
 void Buzzer::stopTone() {
-  
+
+    ICR1 = TIMER1_MAX;
     pinMode(buzzerPin, INPUT);
 }
 
@@ -133,8 +160,8 @@ void Buzzer::getNoteFrequencies() {
 
     float pitchC2 = referencePitch / A4_C2_RATIO;
 
-    for(int j = 0; j < N_OCTAVES; j++) {
-        for(int i = C; i < N_LETTERS; i++) noteFrequencies[i][j] = pitchC2 * pow(SEMITONE_RATIO, i + j*N_LETTERS);  
+    for(int j = START_OCTAVE; j < END_OCTAVE; j++) {
+        for(int i = C; i < N_LETTERS; i++) noteFrequencies[i][j - START_OCTAVE] = pitchC2 * pow(SEMITONE_RATIO, i + j*N_LETTERS);  
     }
 }
 
@@ -169,7 +196,10 @@ void Buzzer::getSequence(Note *notes, long *duration, int nNotes) {
 
     for(int i = 0; i < nNotes; i++) {
         
-        currSequence[i] = noteFrequencies[notes[i].name][max(notes[i].octave - START_OCTAVE, START_OCTAVE)];
+        if(notes[i].octave >= END_OCTAVE) currSequence[i] = noteFrequencies[notes[i].name][N_OCTAVES - 1];
+        else if(notes[i].octave < START_OCTAVE) currSequence[i] = noteFrequencies[notes[i].name][0];
+        else currSequence[i] = noteFrequencies[notes[i].name][notes[i].octave - START_OCTAVE];
+
         currDuration[i] = duration[i];
     }
 
@@ -213,13 +243,17 @@ void Buzzer::enableTimer() {
         case 9: TCCR1A |= _BV(COM1A1); break;
         case 10: TCCR1A |= _BV(COM1B1); break;
     }
-    TIMSK0 |= _BV(OCIE0A);
+    ICR1 = TIMER1_MAX;
+    TIMSK1 |= _BV(ICIE1);
 }
 
-ISR(TIMER0_COMPA_vect) {
+ISR(TIMER1_CAPT_vect) {
 
+    static const int DELAY = 50;
     static volatile unsigned long timer = 0;
-    if(millis() - timer < 50) return; 
+
+    if(millis() - timer < DELAY) return; 
     timer = millis();
+    
     for(int i = 0; i < last_buzzer; i++) callback_buzzers[i]->play();
 }
