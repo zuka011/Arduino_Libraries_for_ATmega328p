@@ -117,8 +117,6 @@ void Buzzer::stop() {
 
 void Buzzer::play() {
 
-    if(!isPlaying()) return;
-
     switch(playState) {
 
         case 0:
