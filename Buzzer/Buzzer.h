@@ -4,6 +4,7 @@
 #include "Arduino.h"
 
 #define INDEFINITE -1
+#define REST_NOTE 0
 
 enum Letter {C, Db, D, Eb, E, F, Gb, G, Ab, A, Bb, B}; // Note names in 12TET system.
 
@@ -16,6 +17,10 @@ struct Note { // A struct representing a musical note, with it's name and octave
 
     String toString();
 };
+
+bool operator==(const Note & note1, const Note & note2);
+
+const Note REST(0, 0);
 
 class Buzzer {
 public:

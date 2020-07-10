@@ -12,6 +12,7 @@
 #define CLOCK_FREQUENCY 16e6
 #define TIMER1_PRESCALER 1
 #define TIMER1_MAX 65535
+#define TIMER1_MIN 256
 #define MAX_BUZZERS 2
 
 static volatile Buzzer* callback_buzzers[MAX_BUZZERS];
@@ -37,6 +38,10 @@ String Note::toString() {
     return stringRep + String(octave);
 }
 
+bool operator==(const Note & note1, const Note & note2) {
+    return note1.name == note2.name && note1.octave == note2.octave;
+}
+
 Buzzer::Buzzer(float referencePitch) {
 
     this->referencePitch = referencePitch;
@@ -44,6 +49,10 @@ Buzzer::Buzzer(float referencePitch) {
     currSequence = NULL;
     currDuration = NULL;
     noteFrequencies = NULL;
+
+    sequenceSize = 0;
+    currNote = 0;
+    playState = 0;
 
     getNoteFrequencies();
 }
@@ -97,7 +106,7 @@ void Buzzer::playSequence(Note *notes, long *duration, int nNotes) {
 }
 
 bool Buzzer::isPlaying() { 
-    return currNote == sequenceSize;
+    return currNote < sequenceSize;
 }
 
 void Buzzer::stop() {
@@ -108,10 +117,14 @@ void Buzzer::stop() {
 
 void Buzzer::play() {
 
+    if(!isPlaying()) return;
+
     switch(playState) {
 
         case 0:
-            startTone(currSequence[currNote]);
+
+            if(currSequence[currNote] == REST_NOTE) stopTone();
+            else startTone(currSequence[currNote]);
             playState++;
         case 1:
 
@@ -132,7 +145,12 @@ void Buzzer::startTone(float frequency) {
 
     pinMode(buzzerPin, OUTPUT);
 
-    ICR1 = CLOCK_FREQUENCY / (TIMER1_PRESCALER * frequency);
+    unsigned int newICRValue = CLOCK_FREQUENCY / (TIMER1_PRESCALER * frequency);
+    
+    if(newICRValue > TIMER1_MAX) newICRValue = TIMER1_MAX;
+    else if(newICRValue < TIMER1_MIN) newICRValue = TIMER1_MIN;
+    else ICR1 = newICRValue;
+    
     switch(buzzerPin) {
         case 9: OCR1A = ICR1 / 2; break;
         case 10: OCR1B = ICR1 / 2; break;
@@ -176,7 +194,7 @@ void Buzzer::getSequence(float *frequencies, long *duration, int nFrequencies) {
     currDuration = new long[nFrequencies];
 
     for(int i = 0; i < nFrequencies; i++) {
-     
+      
         currSequence[i] = frequencies[i];
         currDuration[i] = duration[i];
     }
@@ -196,7 +214,8 @@ void Buzzer::getSequence(Note *notes, long *duration, int nNotes) {
 
     for(int i = 0; i < nNotes; i++) {
         
-        if(notes[i].octave >= END_OCTAVE) currSequence[i] = noteFrequencies[notes[i].name][N_OCTAVES - 1];
+        if(notes[i] == REST) currSequence[i] = REST_NOTE;
+        else if(notes[i].octave >= END_OCTAVE) currSequence[i] = noteFrequencies[notes[i].name][N_OCTAVES - 1];
         else if(notes[i].octave < START_OCTAVE) currSequence[i] = noteFrequencies[notes[i].name][0];
         else currSequence[i] = noteFrequencies[notes[i].name][notes[i].octave - START_OCTAVE];
 
