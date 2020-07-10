@@ -81,6 +81,13 @@ public:
     void step(long nSteps);
     void step(); // This method is for the timer interrupt, you do not need to use it. 
 
+    /**
+     * isRotating():
+     * ------------------------------------------------------------------------------------------------
+     * Returns true if the stepper is rotating in either direction.
+     */
+    bool isRotating();
+
 	/**
      * stop():
      * ------------------------------------------------------------------------------------------------

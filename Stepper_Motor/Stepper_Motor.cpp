@@ -117,6 +117,10 @@ void StepperMotor::step() {
     if(currPosition < 0) currPosition += FULL_REVOLUTION_D;
 }
 
+bool StepperMotor::isRotating() {
+    return nSteps != 0;
+}
+
 void StepperMotor::stop() {
     nSteps = 0;
 }
