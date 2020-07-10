@@ -117,6 +117,10 @@ void StepperMotor::step() {
     if(currPosition < 0) currPosition += FULL_REVOLUTION_D;
 }
 
+void StepperMotor::stop() {
+    nSteps = 0;
+}
+
 bool StepperMotor::stepForward() {
    
     while(forwardSequenceIterator < N_STEPS) {

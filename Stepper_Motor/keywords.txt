@@ -20,6 +20,7 @@ setStartPosition	KEYWORD2
 getPosition	KEYWORD2
 setSpeed	KEYWORD2
 step	KEYWORD2
+stop	KEYWORD2
 
 ################
 # Constants

@@ -81,6 +81,13 @@ public:
     void step(long nSteps);
     void step(); // This method is for the timer interrupt, you do not need to use it. 
 
+	/**
+     * stop():
+     * ------------------------------------------------------------------------------------------------
+     * Immediately stops the stepper motor's rotation, regardless of it being interruptable/non-interruptable.
+     */
+	void stop();
+
 private:
 
     float stepsPerRevolution, delayUSeconds;
