@@ -28,6 +28,22 @@ public:
      */
     void init();
 
+
+    /**
+     * enable();
+     * ------------------------------------------------------------------------------------------------
+     * Enables the rotary encoders functioning. This is called with init() by default, but can be used
+     * separately, in case disable() was called.
+     */
+    void enable();
+
+    /**
+     * disable();
+     * ------------------------------------------------------------------------------------------------
+     * Disables the rotary encoders functioning. Can be re-enabled by calling enable().
+     */
+    void disable();
+
     /**
      * attachFunction();
      * ------------------------------------------------------------------------------------------------
@@ -75,8 +91,7 @@ private:
 
     uint8_t *getPin(uint8_t &pin);
 
-    void enableCallback();
-    void disableCallback();
+    void initTimer();
 };
 
 #endif 

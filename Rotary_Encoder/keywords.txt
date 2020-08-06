@@ -1,26 +1,28 @@
 ###################################################
-#	Color map for Rotary_Encoder library	  #
+#	Color map for Rotary_Encoder library	  	  #
 ###################################################
 
 ###################################################
 
 ###################################################
-#	Classes/Structs				  #
+#	Classes/Structs				  				  #
 ###################################################
 
 Encoder	KEYWORD1
 
 ###################################################
-#	Methods					  #
+#	Methods					  					  #
 ###################################################
 
 init	KEYWORD2
 attachFunction	KEYWORD2
 getTickCount	KEYWORD2
 getLastDirection	KEYWORD2
+enable	KEYWORD2
+disable	KEYWORD2
 
 ###################################################
-#	Constants				  #
+#	Constants				 					  #
 ###################################################
 
 Clockwise	LITERAL1

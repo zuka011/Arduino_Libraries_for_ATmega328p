@@ -20,7 +20,7 @@ Encoder::Encoder(uint8_t pinA, uint8_t pinB) {
 }
 
 Encoder::~Encoder() {
-    disableCallback();
+    disable();
 }
 
 void Encoder::init() {
@@ -32,14 +32,8 @@ void Encoder::init() {
     clockWiseFunc = NULL;
     cClockWiseFunc = NULL;
 
-    enableCallback();
-
-    // Timer initialization
-    if(TCCR0B & B00000111 == 0 ) TCCR0B |= _BV(CS01);
-
-    OCR0A = B11111111 / 4;    
-    TIMSK0 |= _BV(OCIE0A);
-
+    initTimer();
+    enable();
 }
 
 void Encoder::attachFunction(void (*func)(void), Direction direction) {
@@ -123,7 +117,15 @@ void Encoder::checkEncoder() {
     }
 }
 
-void Encoder::enableCallback() {
+void Encoder::initTimer() {
+    
+    if(TCCR0B & B00000111 == 0 ) TCCR0B |= _BV(CS01);
+
+    OCR0A = B11111111 / 2;    
+    TIMSK0 |= _BV(OCIE0A);
+}
+
+void Encoder::enable() {
 
     if(last_encoder == MAX_ENCODERS) return;
     for(int i = 0; i < last_encoder; i++) if(callback_encoders[i] == this) return;
@@ -131,7 +133,7 @@ void Encoder::enableCallback() {
     callback_encoders[last_encoder++] = this;
 }
 
-void Encoder::disableCallback() {
+void Encoder::disable() {
     
     int removedEncoderIndex = -1;
 
@@ -146,7 +148,7 @@ void Encoder::disableCallback() {
 
     if(removedEncoderIndex != -1) {
 
-        for(int i = removedEncoderIndex + 1; i < MAX_ENCODERS; i++) callback_encoders[i - 1] = callback_encoders[i];
+        for(int i = removedEncoderIndex + 1; i < last_encoder; i++) callback_encoders[i - 1] = callback_encoders[i];
         last_encoder--;
     }
 }
