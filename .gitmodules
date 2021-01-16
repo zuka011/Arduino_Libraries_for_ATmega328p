@@ -1,0 +1,4 @@
+[submodule "DHT11_Sensor_for_ATmega328p"]
+	path = DHT11_Sensor_for_ATmega328p
+	url = https://github.com/zuka011/DHT11_Sensor_for_ATmega328p
+	branch = master
