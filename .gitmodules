@@ -1,28 +1,28 @@
-[submodule "DHT11_Sensor_for_ATmega328p"]
+[submodule "DHT11 Sensor for ATmega328p"]
 	path = DHT11_Sensor_for_ATmega328p
 	url = https://github.com/zuka011/DHT11_Sensor_for_ATmega328p
 	branch = master
-[submodule "7_Segment_Display_for_ATmega328p"]
+[submodule "7 Segment_Display for ATmega328p"]
 	path = 7_Segment_Display_for_ATmega328p
 	url = https://github.com/zuka011/7_Segment_Display_for_ATmega328p
 	branch = master
-[submodule "Rotary_Encoder_for_ATmega328p"]
+[submodule "Rotary Encoder for ATmega328p"]
 	path = Rotary_Encoder_for_ATmega328p
 	url = https://github.com/zuka011/Rotary_Encoder_for_ATmega328p
 	branch = master
-[submodule "Buzzer_for_ATmega328p"]
+[submodule "Buzzer for ATmega328p"]
 	path = Buzzer_for_ATmega328p
 	url = https://github.com/zuka011/Buzzer_for_ATmega328p
 	branch = master
-[submodule "Servo_Motor_for_ATmega328p"]
+[submodule "Servo Motor for ATmega328p"]
 	path = Servo_Motor_for_ATmega328p
 	url = https://github.com/zuka011/Servo_Motor_for_ATmega328p
 	branch = master
-[submodule "Stepper_Motor_for_ATmega328p"]
+[submodule "Stepper Motor for ATmega328p"]
 	path = Stepper_Motor_for_ATmega328p
 	url = https://github.com/zuka011/Stepper_Motor_for_ATmega328p
 	branch = master
-[submodule "Timer_Interrupts_for_ATmega328p"]
+[submodule "Timer Interrupts for ATmega328p"]
 	path = Timer_Interrupts_for_ATmega328p
 	url = https://github.com/zuka011/Timer_Interrupts_for_ATmega328p
 	branch = master
